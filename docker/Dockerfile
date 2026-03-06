@@ -34,6 +34,7 @@ RUN \
     vim \
     wget \
     zip \
+    openjdk-17-jdk openjdk-17-jre \
     sudo && \
   echo "**** install code-server ****" && \
   if [ -z ${CODE_RELEASE+x} ]; then \
@@ -73,6 +74,13 @@ RUN git clone https://github.com/nesi/training-environment-k8s-utils.git /opt/oo
 RUN echo "#!/bin/bash" > /bin/module \
     && chmod +x /bin/module
 
+#install nextflow : Download -all from GH to workaround https://github.com/nesi/training-environment-jupyter-intronextflow-app/issues/1
+#RUN curl -s https://get.nextflow.io | bash \
+RUN wget -c https://github.com/nextflow-io/nextflow/releases/download/v25.10.2/nextflow-25.10.2-all \
+    && mv nextflow-25.10.2-all nextflow \ 
+    && chmod +x nextflow \
+    && mv nextflow /usr/local/bin \
+    && chmod a+rw /usr/local/bin/nextflow
 
 # add local files
 COPY /root /
