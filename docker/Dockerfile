@@ -93,12 +93,12 @@ RUN nf-core --version
 
 # get training materials
 RUN set -eux; \
-    mkdir -p /usr/training/; \
+    mkdir -p /var/lib/training/; \
     curl -fL -o /tmp/nf-training.zip "https://github.com/nextflow-io/training/archive/refs/tags/${NF_TRAINING_VER}.zip"; \
     unzip -q /tmp/nf-training.zip -d /tmp; \
     # move only the contents into ~/training
     shopt -s dotglob || true; \
-    mv /tmp/training-${NF_TRAINING_VER}/* /usr/training/; \
+    mv /tmp/training-${NF_TRAINING_VER}/* /var/lib/training/; \
     rm -rf /tmp/nf-training.zip /tmp/training-${NF_TRAINING_VER}
 
 # add local files
