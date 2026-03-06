@@ -76,8 +76,8 @@ RUN echo "#!/bin/bash" > /bin/module \
 
 #install nextflow : Download -all from GH to workaround https://github.com/nesi/training-environment-jupyter-intronextflow-app/issues/1
 #RUN curl -s https://get.nextflow.io | bash \
-RUN wget -c https://github.com/nextflow-io/nextflow/releases/download/v25.10.2/nextflow-25.10.2-all \
-    && mv nextflow-25.10.2-all nextflow \ 
+RUN wget -c https://github.com/nextflow-io/nextflow/releases/download/v25.10.2/nextflow \
+    # && mv nextflow-25.10.2-all nextflow \ 
     && chmod +x nextflow \
     && mv nextflow /usr/local/bin \
     && chmod a+rw /usr/local/bin/nextflow
