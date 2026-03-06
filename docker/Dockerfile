@@ -80,6 +80,13 @@ RUN wget -c https://github.com/nextflow-io/nextflow/releases/download/v25.10.2/n
     && mv nextflow /usr/local/bin \
     && chmod a+rw /usr/local/bin/nextflow
 
+# install nf-core
+RUN pip3 --no-cache-dir install nf-core
+
+# copy in nextflow-run workflow
+RUN wget https://github.com/nextflow-io/training/archive/refs/tags/3.3.zip \
+    && unzip 3.3.zip -d ~/
+
 # add local files
 COPY /root /
 
