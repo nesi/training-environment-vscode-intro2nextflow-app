@@ -43,7 +43,8 @@ if [[ -f "$CPP_FILE" ]]; then
 echo "$(date): Started code-server"
 echo ""
 
-# avoind using ${host} for --bind-addr
+# copy data
+rsync --ignore-existing -avz /var/lib/training/* ~/training/
 
 code-server \
     --auth="password" \
