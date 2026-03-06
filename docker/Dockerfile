@@ -4,8 +4,10 @@ FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 ARG BUILD_DATE
 ARG VERSION
 ARG CODE_RELEASE
+ARG NXF_VER=25.10.2
+ARG NF_TRAINING_VER=3.3
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="Dinindu Senanayake"
+LABEL maintainer="Jen Reeve"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -35,6 +37,7 @@ RUN \
     wget \
     zip \
     openjdk-17-jdk openjdk-17-jre \
+    python3 python3-pip \
     sudo && \
   echo "**** install code-server ****" && \
   if [ -z ${CODE_RELEASE+x} ]; then \
@@ -74,18 +77,29 @@ RUN git clone https://github.com/nesi/training-environment-k8s-utils.git /opt/oo
 RUN echo "#!/bin/bash" > /bin/module \
     && chmod +x /bin/module
 
-RUN wget -c https://github.com/nextflow-io/nextflow/releases/download/v25.10.2/nextflow \
-    # && mv nextflow-25.10.2-all nextflow \ 
-    && chmod +x nextflow \
-    && mv nextflow /usr/local/bin \
-    && chmod a+rw /usr/local/bin/nextflow
+RUN set -eux; \
+    curl -fsSL https://get.nextflow.io | bash; \
+    mv nextflow /usr/local/bin/nextflow; \
+    chmod 755 /usr/local/bin/nextflow; \
+    nextflow self-update "${NXF_VER}"
+
+RUN nextflow -version
 
 # install nf-core
-RUN pip3 --no-cache-dir install nf-core
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && python3 -m pip install --no-cache-dir nf-core
 
-# copy in nextflow-run workflow
-RUN wget https://github.com/nextflow-io/training/archive/refs/tags/3.3.zip \
-    && unzip 3.3.zip -d ~/
+RUN nf-core --version
+
+# get training materials
+RUN set -eux; \
+    mkdir -p "${HOME}/training"; \
+    curl -fL -o /tmp/nf-training.zip "https://github.com/nextflow-io/training/archive/refs/tags/${NF_TRAINING_VER}.zip"; \
+    unzip -q /tmp/nf-training.zip -d /tmp; \
+    # move only the contents into ~/training
+    shopt -s dotglob || true; \
+    mv /tmp/training-${NF_TRAINING_VER}/* "${HOME}/training/"; \
+    rm -rf /tmp/nf-training.zip /tmp/training-${NF_TRAINING_VER}
 
 # add local files
 COPY /root /
