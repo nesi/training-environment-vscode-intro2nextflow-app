@@ -45,6 +45,7 @@ echo ""
 
 # copy data
 rsync --ignore-existing -avz /var/lib/training/* ~/training/
+rsync --ignore-existing -avz /var/lib/nf-core-demo/* ~/nf-core-demo/
 
 code-server \
     --auth="password" \
