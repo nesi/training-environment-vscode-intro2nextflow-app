@@ -77,6 +77,12 @@ RUN git clone https://github.com/nesi/training-environment-k8s-utils.git /opt/oo
 RUN echo "#!/bin/bash" > /bin/module \
     && chmod +x /bin/module
 
+# install apptainer
+RUN add-apt-repository -y ppa:apptainer/ppa \
+    && apt update \
+    && apt install -y apptainer-suid \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN set -eux; \
     curl -fsSL https://get.nextflow.io | bash; \
     mv nextflow /usr/local/bin/nextflow; \
@@ -91,7 +97,8 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
 
 RUN nf-core --version
 
-RUN nf-core pipelines download demo -r v.1.1.0 --outdir /var/lib/nf-core-demo
+RUN nf-core pipelines download demo -r v.1.1.0 --outdir /var/lib/nf-core-demo \
+  --container-system singularity
 
 # get training materials
 RUN set -eux; \
