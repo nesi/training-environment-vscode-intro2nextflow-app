@@ -36,7 +36,6 @@ RUN \
     vim \
     wget \
     zip \
-    apptainer \
     openjdk-17-jdk openjdk-17-jre \
     python3 python3-pip \
     sudo && \
@@ -58,6 +57,15 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/* 
+
+
+# install add-apt-repository and friends, then add the PPA
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common gnupg ca-certificates \
+    && add-apt-repository -y ppa:apptainer/ppa \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends apptainer-suid \
+    && rm -rf /var/lib/apt/lists/*s
 
 # install kubectl, required for running on the k8s cluster
 ARG KUBECTL_VERSION=v1.28.5
