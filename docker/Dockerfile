@@ -36,6 +36,7 @@ RUN \
     vim \
     wget \
     zip \
+    apptainer \
     openjdk-17-jdk openjdk-17-jre \
     python3 python3-pip \
     sudo && \
@@ -76,12 +77,6 @@ RUN git clone https://github.com/nesi/training-environment-k8s-utils.git /opt/oo
 # make a dummy module command to avoid warnings from ondemand job_script_content.sh
 RUN echo "#!/bin/bash" > /bin/module \
     && chmod +x /bin/module
-
-# install apptainer
-RUN add-apt-repository -y ppa:apptainer/ppa \
-    && apt update \
-    && apt install -y apptainer-suid \
-    && rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
     curl -fsSL https://get.nextflow.io | bash; \
