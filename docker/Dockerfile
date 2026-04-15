@@ -100,7 +100,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
 
 RUN nf-core --version
 
-RUN nf-core pipelines download demo -r 1.1.0 --outdir /var/lib/nf-core-demo \
+RUN nf-core pipelines download demo -r 1.1.0 --outdir /var/lib/.nextflow/ \
   --container-system singularity --compress none
 
 # get training materials
