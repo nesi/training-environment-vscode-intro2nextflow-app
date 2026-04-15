@@ -5,7 +5,7 @@ ARG BUILD_DATE
 ARG VERSION
 ARG CODE_RELEASE
 ARG NXF_VER=25.10.2
-ARG NF_TRAINING_VER=3.3
+ARG NF_CORE_DEMO_VER=1.1.0
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="Jen Reeve"
 
@@ -94,24 +94,18 @@ RUN set -eux; \
 
 RUN nextflow -version
 
+RUN export NXF_SINGULARITY_CACHEDIR=/var/lib/singularity_cache/
+
 # install nf-core
 RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
     && python3 -m pip install --no-cache-dir nf-core
 
 RUN nf-core --version
 
-RUN nf-core pipelines download demo -r 1.1.0 --outdir /var/lib/.nextflow/ \
+RUN nf-core pipelines download demo -r ${NF_CORE_DEMO_VER} --outdir /var/lib/nf-core-demo \
   --container-system singularity --compress none
 
-# get training materials
-RUN set -eux; \
-    mkdir -p /var/lib/training/; \
-    curl -fL -o /tmp/nf-training.zip "https://github.com/nextflow-io/training/archive/refs/tags/${NF_TRAINING_VER}.zip"; \
-    unzip -q /tmp/nf-training.zip -d /tmp; \
-    # move only the contents into ~/training
-    shopt -s dotglob || true; \
-    mv /tmp/training-${NF_TRAINING_VER}/* /var/lib/training/; \
-    rm -rf /tmp/nf-training.zip /tmp/training-${NF_TRAINING_VER}
+RUN nextflow pull nf-core/demo -r ${NF_CORE_DEMO_VER}
 
 # add local files
 COPY /root /
