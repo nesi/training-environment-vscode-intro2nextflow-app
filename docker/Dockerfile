@@ -94,8 +94,6 @@ RUN set -eux; \
 
 RUN nextflow -version
 
-RUN export NXF_SINGULARITY_CACHEDIR=/var/lib/singularity_cache/
-
 # install nf-core
 RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel \
     && python3 -m pip install --no-cache-dir nf-core
@@ -105,10 +103,7 @@ RUN nf-core --version
 RUN nf-core pipelines download demo -r ${NF_CORE_DEMO_VER} --outdir /var/lib/nf-core-demo \
   --container-system singularity --compress none
 
-RUN nextflow pull nf-core/demo -r ${NF_CORE_DEMO_VER}
-
-# add local files
-COPY /root /
+RUN cd /var/lib && nextflow pull nf-core/demo -r ${NF_CORE_DEMO_VER}
 
 RUN ln -s /app/code-server/bin/code-server /usr/local/bin/code-server
 
