@@ -3,7 +3,6 @@
 # Set our working directory.
 export WORKING_DIR="<%= session.staged_root %>"
 
-
 # Ensure that code-server always starts up in either a user defined directory or the home directory.
 if [ ! -e "${WORKING_DIR}" ]; then
     ${WORKING_DIR}="$HOME"
@@ -43,8 +42,11 @@ if [[ -f "$CPP_FILE" ]]; then
 echo "$(date): Started code-server"
 echo ""
 
+# Set Nextflow assets directory
+export NXF_ASSETS=/var/lib/.nextflow/assets
+
 # copy data
-# rsync --ignore-existing -avz /var/lib/training/* ~/training/
+rsync --ignore-existing -avz /var/lib/.nextflow/* ~/.nextflow/
 
 code-server \
     --auth="password" \
