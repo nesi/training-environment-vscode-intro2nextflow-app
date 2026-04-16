@@ -103,7 +103,7 @@ RUN nf-core --version
 # RUN nf-core pipelines download demo -r ${NF_CORE_DEMO_VER} --outdir /var/lib/nf-core-demo \
 #   --container-system singularity --compress none
 
-RUN cd /var/lib && nextflow pull nf-core/demo -r ${NF_CORE_DEMO_VER}
+RUN export NXF_ASSETS=/var/lib/.nextflow/assets && nextflow pull nf-core/demo -r ${NF_CORE_DEMO_VER}
 
 RUN ln -s /app/code-server/bin/code-server /usr/local/bin/code-server
 
