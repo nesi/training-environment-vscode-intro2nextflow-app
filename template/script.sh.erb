@@ -47,6 +47,7 @@ export NXF_ASSETS=/var/lib/.nextflow/assets
 
 # copy data
 rsync --ignore-existing -avz /var/lib/.nextflow/* ~/.nextflow/
+export NXF_ASSETS=~/.nextflow/assets
 
 code-server \
     --auth="password" \
