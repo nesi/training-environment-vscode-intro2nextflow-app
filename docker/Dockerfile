@@ -111,7 +111,7 @@ RUN export NXF_HOME=/var/lib/.nextflow \
 
 RUN export APPTAINER_CACHEDIR=/var/lib/.apptainer_cache \
   && apptainer pull docker://community.wave.seqera.io/library/multiqc:1.33--ee7739d47738383b \
-  && apptainer pull docker://community.wave.seqera.io/library/multiqc:1.33--ee7739d47738383b \
+  && apptainer pull docker://quay.io/biocontainers/seqtk:1.4--he4a0461_1 \
   && apptainer pull docker://quay.io/biocontainers/fastqc:0.12.1--hdfd78af_0 \
   && unset APPTAINER_CACHEDIR
 
