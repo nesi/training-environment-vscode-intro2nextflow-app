@@ -47,6 +47,7 @@ export NXF_ASSETS=/var/lib/.nextflow/assets
 
 # copy data
 rsync --ignore-existing -avz /var/lib/.nextflow/* ~/.nextflow/
+rsync --ignore-existing -avz /var/lib/.apptainer_cache/* ~/.apptainer_cache/
 unset NXF_VER NXF_ASSETS NXF_APPTAINER_CACHEDIR NXF_HOME
 
 code-server \

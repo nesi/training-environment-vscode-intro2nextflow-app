@@ -107,7 +107,13 @@ RUN export NXF_HOME=/var/lib/.nextflow \
   && export NXF_APPTAINER_CACHEDIR=/var/lib/.nextflow/apptainer \
   && nextflow run nextflow-io/hello \
   && NXF_VER=22.10.0 nextflow run nextflow-io/hello -r v1.1 \
-  && nextflow run nf-core/demo -profile test,apptainer -r ${NF_CORE_DEMO_VER} --outdir results -preview
+  && NXF_VER=26.04.0 nextflow run nf-core/demo -profile test,apptainer -r ${NF_CORE_DEMO_VER} --outdir results -preview
+
+RUN export APPTAINER_CACHEDIR=/var/lib/.apptainer_cache \
+  && apptainer pull docker://community.wave.seqera.io/library/multiqc:1.33--ee7739d47738383b \
+  && apptainer pull docker://community.wave.seqera.io/library/multiqc:1.33--ee7739d47738383b \
+  && apptainer pull docker://quay.io/biocontainers/fastqc:0.12.1--hdfd78af_0 \
+  && unset APPTAINER_CACHEDIR
 
 RUN ln -s /app/code-server/bin/code-server /usr/local/bin/code-server
 
