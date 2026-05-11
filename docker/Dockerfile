@@ -103,7 +103,11 @@ RUN nf-core --version
 # RUN nf-core pipelines download demo -r ${NF_CORE_DEMO_VER} --outdir /var/lib/nf-core-demo \
 #   --container-system singularity --compress none
 
-RUN export NXF_ASSETS=/var/lib/.nextflow/assets && nextflow pull nf-core/demo -r ${NF_CORE_DEMO_VER}
+RUN export NXF_HOME=/var/lib/.nextflow \
+  && export NXF_APPTAINER_CACHEDIR=/var/lib/.nextflow/apptainer \
+  && nextflow run nextflow-io/hello \
+  && NXF_VER=22.10.0 nextflow run nextflow-io/hello -r v1.1 \
+  && nextflow run nf-core/demo -profile test,apptainer -r ${NF_CORE_DEMO_VER} --outdir results
 
 RUN ln -s /app/code-server/bin/code-server /usr/local/bin/code-server
 
